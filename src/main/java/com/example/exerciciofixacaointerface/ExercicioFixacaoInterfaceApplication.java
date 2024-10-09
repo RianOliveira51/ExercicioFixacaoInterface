@@ -3,6 +3,7 @@ package com.example.exerciciofixacaointerface;
 import com.example.exerciciofixacaointerface.entities.Contrato;
 import com.example.exerciciofixacaointerface.entities.Installment;
 import com.example.exerciciofixacaointerface.services.ContractService;
+import com.example.exerciciofixacaointerface.services.PaypalService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -52,7 +53,7 @@ public class ExercicioFixacaoInterfaceApplication {
         int n = sc.nextInt();
         System.out.println(contrato);
 
-        ContractService contractService = new ContractService(null);
+        ContractService contractService = new ContractService(new PaypalService());
 
         contractService.processContract(contrato,n);
 

@@ -14,9 +14,25 @@ public class ContractService {
         this.onlinePaymentService = onlinePaymentService;
     }
 
+    //gerando parcelas
     public void processContract(Contrato contrato, int months){
-        contrato.getInstallments().add(new Installment(LocalDate.of(2018,7,25),206.04));
-        contrato.getInstallments().add(new Installment(LocalDate.of(2018,8,25),208.08));
+
+        double basicQuota = contrato.getValor() / months;
+
+        for( int i=1; i <= months; i++){
+            //plusMonths - adicionando meses
+            LocalDate duedate = contrato.getData().plusMonths(i);
+
+            //juros
+            double interest = onlinePaymentService.interest(basicQuota, i);
+            //taxas
+            double fee = onlinePaymentService.paymentFee(basicQuota + interest);
+            //valor total da parcela
+            double quota = basicQuota + interest + fee;
+
+            //instanciado parcela
+            contrato.getInstallments().add(new Installment(duedate,quota));
+        }
     }
 
 }
